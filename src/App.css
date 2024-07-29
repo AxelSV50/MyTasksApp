@@ -60,6 +60,26 @@
   border-radius: 3px;
   resize: none;
   overflow: auto;
+  font-size: medium;
+
+}
+.input-task-error{
+  font-family:  'Shadows Into Light';
+  background-color: white;
+  border: 2px solid rgba(255, 0, 0, 0.438);
+  color: black;
+  border-radius: 3px;
+  resize: none;
+  overflow: auto;
+  font-size: medium;
   
 }
+.input-task:focus {
+  outline: none;
+}
+.input-task-error:focus {
+  outline: none;
+}
+
+
 
