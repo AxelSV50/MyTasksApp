@@ -18,7 +18,6 @@
 }
 
 .pin-img{
-
   position: absolute;
   max-width: 50px;
   max-height: 50px;
@@ -53,25 +52,25 @@
 }
 
 .input-task{
-  font-family:  'Shadows Into Light';
+  font-family:  'Roboto Mono';
   background-color: white;
   border: 2px solid rgba(0, 102, 255, 0.438);
   color: black;
   border-radius: 3px;
   resize: none;
   overflow: auto;
-  font-size: medium;
+  font-size: small;
 
 }
 .input-task-error{
-  font-family:  'Shadows Into Light';
+  font-family:  'Roboto Mono';
   background-color: white;
   border: 2px solid rgba(255, 0, 0, 0.438);
   color: black;
   border-radius: 3px;
   resize: none;
   overflow: auto;
-  font-size: medium;
+  font-size: small;
   
 }
 .input-task:focus {
@@ -81,5 +80,113 @@
   outline: none;
 }
 
+.check-btn{
+
+  background-image: url(/check.png);
+  background-size: cover;
+  width: 24px;
+  height: 24px; 
+  border: none;
+  background-color: rgba(0, 102, 255, 0.438);
+  border-radius: 3px;
+}
+
+.check-btn:hover{
+
+  background-color: rgba(0, 128, 0, 0.438);
+  cursor: pointer;
+
+}
+
+.delete-btn{
+
+  background-image: url(/delete.png);
+  background-size: cover;
+  width: 24px;
+  height: 24px; 
+  border: none;
+  background-color: rgba(0, 102, 255, 0.438);
+  border-radius: 3px;
+}
+
+.delete-btn:hover{
+
+  background-color: rgba(255, 0, 0, 0.438);
+  cursor: pointer;
+}
+.edit-btn{
+
+  background-image: url(/edit.png);
+  background-size: cover;
+  width: 24px;
+  height: 24px; 
+  border: none;
+  background-color: rgba(0, 102, 255, 0.438);
+  border-radius: 3px;
+}
+
+.edit-btn:hover{
+  background-color: rgba(183, 0, 255, 0.438);
+  cursor: pointer;
+}
+
+.submit-btn{
+  height: '30px';
+  border: none; 
+  background-color: rgba(0, 102, 255, 0.438);
+  border-radius: 3px;
+  font-family: 'Shadows Into Light';
+}
+
+.submit-btn:hover{
+  background-color: rgba(0, 128, 0, 0.438);
+  cursor: pointer;
+}
+
+.cancel-btn{
+
+  background-image: url(/cancel.png);
+  background-size: cover;
+  width: 24px;
+  height: 24px; 
+  border: none;
+  background-color: rgba(0, 102, 255, 0.438);
+  border-radius: 3px;
+}
+
+.cancel-btn:hover{
+  background-color: rgba(255, 0, 0, 0.438);
+  cursor: pointer;
+}
+
+
+.todo-btn{
+
+  background-size: cover;
+  height: 24px; 
+  border: none;
+  border-radius: 3px;
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+  font-family: 'Shadows Into Light';
+}
+
+.todo-btn:hover{
+  cursor: pointer;
+}
+.done-btn{
+
+  background-size: cover;
+  height: 24px; 
+  border: none;
+  border-radius: 3px;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+  font-family: 'Shadows Into Light';
+}
+
+.done-btn:hover{
+  cursor: pointer;
+}
 
 

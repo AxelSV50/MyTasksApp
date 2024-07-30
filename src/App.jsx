@@ -4,9 +4,11 @@ import './App.css'
 function App() {
 
   const [tasks, setTasks] = useState([])
+  const [tasksDone, setTasksDone] = useState([])
   const [taskTitle, setTaskTitle] = useState('')
   const [taskText, setTaskText] = useState('')
   const [error, setError] = useState(false)
+  const [showTasksDone, setShowTaskDone] = useState(false)
 
   const handleSubmit = (e) =>{
     //Evita el refresh de la página por defecto al enviar formulario
@@ -16,10 +18,13 @@ function App() {
     if(taskTitle.trim()){
       //Limpia el formulario
       e.target.reset()
+
+      setTasks(tasks.concat({title: taskTitle, text: taskText}))
+
+      setError(false)
       setTaskText('')
       setTaskTitle('')
-      setTasks(tasks.concat({title: taskTitle, text: taskText}))
-      setError(false)
+
     }else{
       setError(true)
     }
@@ -38,27 +43,60 @@ function App() {
 
         <TaskForm handleSubmit={handleSubmit} setTaskText={setTaskText} setTaskTitle={setTaskTitle} error={error} taskTitle={taskTitle}/>
         <br/>
+
+        {/*Todo/Done*/}
+        <div style={{ width: '100%', paddingLeft:'50px' }}>
+
+          <button className= 'todo-btn' style= {showTasksDone ? null : {backgroundColor:' rgba(0, 102, 255, 0.438)'}} onClick={()=>{
+            setShowTaskDone(false)
+          }}
+          >ToDo</button>
+
+          <button className= 'done-btn' style= {showTasksDone ? {backgroundColor:' rgba(0, 102, 255, 0.438)'} : null} onClick={()=>{
+            setShowTaskDone(true)
+          }}
+          >Done</button>
+        </div>
+        <br/>
+
+        {/*ARREGLOS DE TAREAS*/}
+        {!showTasksDone ?
         
-        {/*ARREGLO DE TAREAS*/}
-        {console.log('Nuevo arreglo: ')}
-        {tasks.forEach(value => console.log(value))}
-        {tasks.length ? 
-           tasks.map((value, index) => 
-           <Task key = {index}
-            title= {value.title} 
-            text = {value.text} 
-            index={index} 
-            setTasks={setTasks}
-            tasks={tasks}/>
-           )
-          : null
+            tasks.length ? 
+              tasks.map((value, index) => 
+              <Task key = {index}
+              title= {value.title} 
+              text = {value.text} 
+              index={index} 
+              setTasks={setTasks}
+              tasks={tasks}
+              tasksDone={tasksDone}
+              setTasksDone={setTasksDone}
+              done = {false}/>
+              )
+            : 
+            <h4 style={{color:'gray'}}>Nothing here... well done!</h4>
+          :
+            tasksDone.length ? 
+              tasksDone.map((value, index) => 
+              <Task key = {index}
+                title= {value.title} 
+                text = {value.text} 
+                index={index} 
+                setTasksDone={setTasksDone}
+                tasksDone={tasksDone}
+                done={true}/>
+              )
+            : 
+            <h4 style={{color:'gray'}}>Do some tasks!</h4>
         }
+        <br/>
       </div>
     </>
   )
 }
 
-const Task = ({index, title, text, tasks, setTasks}) => {
+const Task = ({index, title, text, tasks, tasksDone, setTasks, setTasksDone, done}) => {
 
   const [isUpdating, setIsUpdating] = useState(false)
   const [taskTitle, setTaskTitle] = useState(title)
@@ -71,6 +109,7 @@ const Task = ({index, title, text, tasks, setTasks}) => {
       ...tasks.slice(0, index),
       ...tasks.slice(index + 1) //Hasta el final
     ]);
+    setTasksDone(tasksDone.concat({title: title, text: text}))
   }
   const handleDeleteTask = () =>{
     setTasks([
@@ -78,7 +117,12 @@ const Task = ({index, title, text, tasks, setTasks}) => {
       ...tasks.slice(index + 1) //Hasta el final
     ]);
   }
-
+  const handleDeleteTaskDone = () =>{
+    setTasksDone([
+      ...tasksDone.slice(0, index),
+      ...tasksDone.slice(index + 1) //Hasta el final
+    ]);
+  }
   const handleSubmit = (e) =>{
     //Evita el refresh de la página por defecto al enviar formulario
     e.preventDefault()
@@ -109,41 +153,43 @@ const Task = ({index, title, text, tasks, setTasks}) => {
     <div className='task-main-container'>
 
       {!isUpdating ?
-       <div className='task-text-container'>
-        <h2 style={{marginTop: 0}}>{title}</h2>
-        <p style={{marginTop: "-10px", color: "rgb(100, 100, 100)"}}>{text}</p>
-       </div>
-       :
-       <TaskForm 
-          handleSubmit={handleSubmit} 
-          setTaskText={setTaskText} 
-          setTaskTitle={setTaskTitle} 
-          error={error} 
-          taskTitle={taskTitle}
-          text = {taskText}
-          />
-      }
+      <>
+        <div className='task-text-container'>
+          <h2 style={{marginTop: 0}}>{title}</h2>
+          <p style={{marginTop: "-10px", color: "rgb(100, 100, 100)", fontFamily: 'Roboto Mono', fontSize:'small'}}>{text}</p>
+        </div>
 
-      <div className='task-btns-container'>
-      <button onClick={handleCheckTask} 
-          className='tasks-btns' 
-          style= {{backgroundImage: 'url(/check.png)',backgroundSize: 'cover', 
-          width: '24px', height: '24px', border: 'none', backgroundColor: 'rgba(0, 102, 255, 0.438)',
-          borderRadius: '3px'}}>
-        </button>
-        <button onClick={handleDeleteTask}
-          className='tasks-btns' 
-          style= {{backgroundImage: 'url(/delete.png)',backgroundSize: 'cover', 
-          width: '24px', height: '24px', border: 'none', backgroundColor: 'rgba(0, 102, 255, 0.438)',
-          borderRadius: '3px'}}>
-        </button>
-        <button onClick={handleUpdating}
-          className='tasks-btns' 
-          style= {{backgroundImage: 'url(/edit.png)',backgroundSize: 'cover', 
-          width: '24px', height: '24px', border: 'none', backgroundColor: 'rgba(0, 102, 255, 0.438)',
-          borderRadius: '3px'}}>
-        </button>
-      </div>
+        {done ? 
+        <div className='task-btns-container'>
+          <button onClick={handleDeleteTaskDone} className='delete-btn'></button>
+        </div>
+        :
+        <div className='task-btns-container'>
+          <button onClick={handleCheckTask} className='check-btn' ></button>
+          <button onClick={handleDeleteTask} className='delete-btn'></button>
+          <button onClick={handleUpdating} className='edit-btn'></button>
+        </div>
+      }
+        
+      </>
+       :
+      <>
+          <div style={{display:'flex', width:'100%', paddingTop:10, paddingBottom:10}}>
+
+          <TaskForm 
+            handleSubmit={handleSubmit} 
+            setTaskText={setTaskText} 
+            setTaskTitle={setTaskTitle} 
+            error={error} 
+            taskTitle={taskTitle}
+            text = {taskText}
+          />
+          </div>
+          <div className='task-btns-container'>
+            <button onClick={handleUpdating} className='cancel-btn'></button>
+          </div>
+       </>
+      }
     </div>
   )
 }
@@ -155,7 +201,7 @@ const TaskForm = ({handleSubmit, setTaskText, setTaskTitle, error, taskTitle, te
         <form style={{display:'flex', flexDirection: 'column', gap: '5px'}} onSubmit={(e) => handleSubmit(e)}>
 
           {error && !taskTitle.trim() ? 
-        
+          
             <input type = 'text' placeholder= 'Add a new title...' className = 'input-task-error'
             value={taskTitle}
             onChange={(e)=>setTaskTitle(e.target.value)}/>
@@ -164,21 +210,17 @@ const TaskForm = ({handleSubmit, setTaskText, setTaskTitle, error, taskTitle, te
             value={taskTitle}
             onChange={(e)=>setTaskTitle(e.target.value)}/>
           }
-          
-          <textarea type = 'text'  placeholder= 'Add a new description...'  className = 'input-task' 
-            onChange={(e)=>setTaskText(e.target.value)}
+          <textarea type = 'text'  placeholder= 'Add a new description...'  className = 'input-task' onChange={(e)=>setTaskText(e.target.value)}      
+              onPaste={
+              (e)=>{
+                //Se usa setTimeOut para que el evento de pegado termine antes de actualizar el estado
+                setTimeout(() => {
+                  setTaskText(e.target.value);
+                }, 0);
+              }}
             value={text}/>
             
-          <button 
-            style= {{
-              backgroundImage: 'url(/add.png)',
-              backgroundSize: 'cover', 
-              width: '30px', 
-              height: '30px',
-              border: 'none', 
-              backgroundColor: 'rgba(0, 102, 255, 0.438)',
-              borderRadius: '3px',
-              fontFamily: 'Shadows Into Light'}}/>
+          <button className='submit-btn'>Submit</button>
         </form>
       </div>
   )
