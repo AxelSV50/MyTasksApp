@@ -1,6 +1,10 @@
 # Preview
 ![image](https://github.com/user-attachments/assets/cbe1184a-ce00-4f7e-9984-7da689f9f3ce)
 
+# Desciption
+
+An application made in React that allows you to have a list of tasks to do...
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
